@@ -1,0 +1,122 @@
+$(function () {
+    $("#jqGrid").jqGrid({
+        url: '../bhelptype/list',
+        datatype: "json",
+        colModel: [			
+			{ label: 'id', name: 'id', index: 'id', width: 50, key: true },
+			{ label: '类型', name: 'helpType', index: 'help_type', width: 80 }, 			
+			{ label: '创建人', name: 'createName', index: 'create_name', width: 80 }, 			
+			{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 }, 			
+			{ label: '修改人', name: 'updateName', index: 'update_name', width: 80 }, 			
+			{ label: '修改时间', name: 'updateTime', index: 'update_time', width: 80 }, 			
+			{ label: '1未删除 0已删除', name: 'yn', index: 'yn', width: 80 }			
+        ],
+		viewrecords: true,
+        height: 385,
+        rowNum: 10,
+		rowList : [10,30,50],
+        rownumbers: true, 
+        rownumWidth: 25, 
+        autowidth:true,
+        multiselect: true,
+        pager: "#jqGridPager",
+        jsonReader : {
+            root: "page.list",
+            page: "page.currPage",
+            total: "page.totalPage",
+            records: "page.totalCount"
+        },
+        prmNames : {
+            page:"page", 
+            rows:"limit", 
+            order: "order"
+        },
+        gridComplete:function(){
+        	//隐藏grid底部滚动条
+        	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+        }
+    });
+});
+
+var vm = new Vue({
+	el:'#rrapp',
+	data:{
+		showList: true,
+		title: null,
+		bHelpType: {}
+	},
+	methods: {
+		query: function () {
+			vm.reload();
+		},
+		add: function(){
+			vm.showList = false;
+			vm.title = "新增";
+			vm.bHelpType = {};
+		},
+		update: function (event) {
+			var id = getSelectedRow();
+			if(id == null){
+				return ;
+			}
+			vm.showList = false;
+            vm.title = "修改";
+            
+            vm.getInfo(id)
+		},
+		saveOrUpdate: function (event) {
+			var url = vm.bHelpType.id == null ? "../bhelptype/save" : "../bhelptype/update";
+			$.ajax({
+				type: "POST",
+			    url: url,
+			    contentType: "application/json",
+			    data: JSON.stringify(vm.bHelpType),
+			    success: function(r){
+			    	if(r.code === 0){
+						alert('操作成功', function(index){
+							vm.reload();
+						});
+					}else{
+						alert(r.msg);
+					}
+				}
+			});
+		},
+		del: function (event) {
+			var ids = getSelectedRows();
+			if(ids == null){
+				return ;
+			}
+			
+			confirm('确定要删除选中的记录？', function(){
+				$.ajax({
+					type: "POST",
+				    url: "../bhelptype/delete",
+				    contentType: "application/json",
+				    data: JSON.stringify(ids),
+				    success: function(r){
+						if(r.code == 0){
+							alert('操作成功', function(index){
+								$("#jqGrid").trigger("reloadGrid");
+							});
+						}else{
+							alert(r.msg);
+						}
+					}
+				});
+			});
+		},
+		getInfo: function(id){
+			$.get("../bhelptype/info/"+id, function(r){
+                vm.bHelpType = r.bHelpType;
+            });
+		},
+		reload: function (event) {
+			vm.showList = true;
+			var page = $("#jqGrid").jqGrid('getGridParam','page');
+			$("#jqGrid").jqGrid('setGridParam',{ 
+                page:page
+            }).trigger("reloadGrid");
+		}
+	}
+});
