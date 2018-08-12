@@ -36,5 +36,5 @@ public interface UserService {
 	 * @param password  密码
 	 * @return          返回用户ID
 	 */
-	long login(String mobile, String password);
+	long login(String username, String password);
 }

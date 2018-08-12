@@ -1,5 +1,6 @@
 package love.fundraising.api;
 
+import love.fundraising.service.SysUserService;
 import love.fundraising.service.TokenService;
 import love.fundraising.service.UserService;
 import love.fundraising.utils.R;
@@ -28,7 +29,7 @@ import java.util.Map;
 @Api("登录接口")
 public class ApiLoginController {
     @Autowired
-    private UserService userService;
+    private SysUserService userService;
     @Autowired
     private TokenService tokenService;
 
@@ -39,15 +40,15 @@ public class ApiLoginController {
     @PostMapping("login")
     @ApiOperation(value = "登录",notes = "登录说明")
     @ApiImplicitParams({
-        @ApiImplicitParam(paramType = "query", dataType="string", name = "mobile", value = "手机号", required = true),
+        @ApiImplicitParam(paramType = "query", dataType="string", name = "username", value = "用户名", required = true),
         @ApiImplicitParam(paramType = "query", dataType="string", name = "password", value = "密码", required = true)
     })
-    public R login(String mobile, String password){
-        Assert.isBlank(mobile, "手机号不能为空");
+    public R login(String username, String password){
+        Assert.isBlank(username, "用户名不能为空");
         Assert.isBlank(password, "密码不能为空");
 
         //用户登录
-        long userId = userService.login(mobile, password);
+        long userId = userService.login(username, password);
 
         //生成token
         Map<String, Object> map = tokenService.createToken(userId);

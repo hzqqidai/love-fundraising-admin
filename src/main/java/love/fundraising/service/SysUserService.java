@@ -1,6 +1,7 @@
 package love.fundraising.service;
 
 import love.fundraising.entity.SysUserEntity;
+import love.fundraising.entity.UserEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -70,4 +71,8 @@ public interface SysUserService {
 	 * @param newPassword  新密码
 	 */
 	int updatePassword(Long userId, String password, String newPassword);
+	
+	public long login(String username, String password);
+	
+	public SysUserEntity queryByUsername(String username);
 }

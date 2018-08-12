@@ -66,8 +66,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public long login(String mobile, String password) {
-		UserEntity user = queryByMobile(mobile);
+	public long login(String username, String password) {
+		UserEntity user = queryByMobile(username);
 		Assert.isNull(user, "手机号或密码错误");
 
 		//密码错误

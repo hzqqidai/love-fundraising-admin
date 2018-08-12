@@ -1,5 +1,17 @@
 package love.fundraising.service.impl;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import love.fundraising.dao.SysUserDao;
 import love.fundraising.entity.SysUserEntity;
 import love.fundraising.service.SysRoleService;
@@ -7,17 +19,7 @@ import love.fundraising.service.SysUserRoleService;
 import love.fundraising.service.SysUserService;
 import love.fundraising.utils.Constant;
 import love.fundraising.utils.RRException;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.crypto.hash.Sha256Hash;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import love.fundraising.utils.validator.Assert;
 
 
 
@@ -130,5 +132,23 @@ public class SysUserServiceImpl implements SysUserService {
 		if(!roleIdList.containsAll(user.getRoleIdList())){
 			throw new RRException("新增用户所选角色，不是本人创建");
 		}
+	}
+
+	@Override
+	public long login(String username, String password) {
+		SysUserEntity user = queryByUsername(username);
+		Assert.isNull(user, "手机号或密码错误");
+
+		//密码错误
+		if(!user.getPassword().equals(DigestUtils.sha256Hex(password))){
+			throw new RRException("手机号或密码错误");
+		}
+
+		return user.getUserId();
+	}
+
+	@Override
+	public SysUserEntity queryByUsername(String username) {
+		return sysUserDao.queryByUserName(username);
 	}
 }

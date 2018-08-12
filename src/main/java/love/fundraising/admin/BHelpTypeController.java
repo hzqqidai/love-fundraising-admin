@@ -35,6 +35,7 @@ public class BHelpTypeController {
 	 * 列表
 	 */
 	@RequestMapping("/list")
+	@RequiresPermissions("bhelptype:list")
 	public R list(@RequestParam Map<String, Object> params){
 		//查询列表数据
         Query query = new Query(params);
@@ -52,6 +53,7 @@ public class BHelpTypeController {
 	 * 信息
 	 */
 	@RequestMapping("/info/{id}")
+	@RequiresPermissions("bhelptype:info")
 	public R info(@PathVariable("id") Long id){
 		BHelpTypeEntity bHelpType = bHelpTypeService.queryObject(id);
 		
@@ -62,6 +64,7 @@ public class BHelpTypeController {
 	 * 保存
 	 */
 	@RequestMapping("/save")
+	@RequiresPermissions("bhelptype:save")
 	public R save(@RequestBody BHelpTypeEntity bHelpType){
 		bHelpTypeService.save(bHelpType);
 		
@@ -72,6 +75,7 @@ public class BHelpTypeController {
 	 * 修改
 	 */
 	@RequestMapping("/update")
+	@RequiresPermissions("bhelptype:update")
 	public R update(@RequestBody BHelpTypeEntity bHelpType){
 		bHelpTypeService.update(bHelpType);
 		
@@ -82,6 +86,7 @@ public class BHelpTypeController {
 	 * 删除
 	 */
 	@RequestMapping("/delete")
+	@RequiresPermissions("bhelptype:delete")
 	public R delete(@RequestBody Long[] ids){
 		bHelpTypeService.deleteBatch(ids);
 		

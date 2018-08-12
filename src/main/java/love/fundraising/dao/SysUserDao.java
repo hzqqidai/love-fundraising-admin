@@ -1,6 +1,7 @@
 package love.fundraising.dao;
 
 import love.fundraising.entity.SysUserEntity;
+import love.fundraising.entity.UserEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -34,4 +35,5 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
 	 * 修改密码
 	 */
 	int updatePassword(Map<String, Object> map);
+	
 }

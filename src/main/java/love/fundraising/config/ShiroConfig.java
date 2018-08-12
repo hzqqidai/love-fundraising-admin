@@ -49,6 +49,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
         shiroFilter.setLoginUrl("/login.html");
+        shiroFilter.setLoginUrl("/adminLogin.html");
         //shiroFilter.setSuccessUrl("/index.html");
         shiroFilter.setUnauthorizedUrl("/");
 
