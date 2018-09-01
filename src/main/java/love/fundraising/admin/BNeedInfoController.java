@@ -62,6 +62,7 @@ public class BNeedInfoController {
 	 * 保存
 	 */
 	@RequestMapping("/save")
+	@RequiresPermissions("bneedinfo:save")
 	public R save(@RequestBody BNeedInfoEntity bNeedInfo){
 		bNeedInfoService.save(bNeedInfo);
 		
@@ -72,6 +73,7 @@ public class BNeedInfoController {
 	 * 修改
 	 */
 	@RequestMapping("/update")
+	@RequiresPermissions("bneedinfo:update")
 	public R update(@RequestBody BNeedInfoEntity bNeedInfo){
 		bNeedInfoService.update(bNeedInfo);
 		
@@ -82,6 +84,7 @@ public class BNeedInfoController {
 	 * 删除
 	 */
 	@RequestMapping("/delete")
+	@RequiresPermissions("bneedinfo:delete")
 	public R delete(@RequestBody Long[] ids){
 		bNeedInfoService.deleteBatch(ids);
 		
