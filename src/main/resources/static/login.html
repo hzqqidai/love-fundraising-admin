@@ -17,8 +17,8 @@
 	<div class="mui-content">
 		<div class="logobg"><img src="public/img/198.png"></div>
 		<div class="tabcz">
-			<a href="#" class="active">登录</a>
-			<a href="#" style="float: right;">注册</a>
+			<a href="/login.html" class="active">登录</a>
+			<a href="/signup1.html" style="float: right;">注册</a>
 		</div>
 		<div class="inputdiv">
 			<div class="mui-input-row userinput">
@@ -39,16 +39,16 @@
 </html>
 <script type="text/javascript">
 function login() {
-	var username = $("#username").val();
-	var password = $("#password").val();
-	if(username==null || username==""){
-		alert("请输入用户名");
-		return false;
-	}
-	if(password==null || password==""){
-		alert("请输入密码");
-		return false;
-	}
+		var username = $("#username").val();
+		var password = $("#password").val();
+		if(username==null || username==""){
+			alert("请输入用户名");
+			return false;
+		}
+		if(password==null || password==""){
+			alert("请输入密码");
+			return false;
+		}
 	
 			var data = "username="+username+"&password="+password;
 			$.ajax({
@@ -58,7 +58,8 @@ function login() {
 			    dataType: "json",
 			    success: function(result){
 					if(result.code == 0){//登录成功
-						parent.location.href ='app/index.html';
+						alert("登录成功");
+						parent.location.href ='/app/proalllist.html';
 					}else{
 						alert("登录失败");
 					}

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="love.fundraising.dao.BHelpListDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="love.fundraising.entity.BHelpListEntity" id="bHelpListMap">
+        <result property="id" column="id"/>
+        <result property="helpid" column="helpid"/>
+        <result property="needid" column="needid"/>
+        <result property="materialtype" column="materialtype"/>
+        <result property="materialnum" column="materialnum"/>
+        <result property="materiallist" column="materiallist"/>
+        <result property="auditstate" column="auditstate"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="love.fundraising.entity.BHelpListEntity">
+		select * from b_help_list where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="love.fundraising.entity.BHelpListEntity">
+		select * from b_help_list
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from b_help_list 
+	</select>
+	 
+	<insert id="save" parameterType="love.fundraising.entity.BHelpListEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into b_help_list
+		(
+			`helpid`, 
+			`needid`, 
+			`materialtype`, 
+			`materialnum`, 
+			`materiallist`, 
+			`auditstate`
+		)
+		values
+		(
+			#{helpid}, 
+			#{needid}, 
+			#{materialtype}, 
+			#{materialnum}, 
+			#{materiallist}, 
+			#{auditstate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="love.fundraising.entity.BHelpListEntity">
+		update b_help_list 
+		<set>
+			<if test="helpid != null">`helpid` = #{helpid}, </if>
+			<if test="needid != null">`needid` = #{needid}, </if>
+			<if test="materialtype != null">`materialtype` = #{materialtype}, </if>
+			<if test="materialnum != null">`materialnum` = #{materialnum}, </if>
+			<if test="materiallist != null">`materiallist` = #{materiallist}, </if>
+			<if test="auditstate != null">`auditstate` = #{auditstate}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from b_help_list where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from b_help_list where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

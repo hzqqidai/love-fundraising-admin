@@ -55,5 +55,25 @@ public class ApiLoginController {
 
         return R.ok(map);
     }
+    
+    /**
+     * 注册1
+     */
+    @IgnoreAuth
+    @PostMapping("signup1")
+    @ApiOperation(value = "注册1",notes = "注册第一步")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(paramType = "query", dataType="string", name = "username", value = "用户名", required = true),
+    	@ApiImplicitParam(paramType = "query", dataType="string", name = "yzcode", value = "验证码", required = true)
+    })
+    public R signup1(String username, String yzcode){
+    	Assert.isBlank(username, "用户名不能为空");
+    	Assert.isBlank(yzcode, "验证码不能为空");
+    	
+    	if(!yzcode.equals("123456")) {
+    		return R.error("验证码不正常");
+    	}
+    	return R.ok("第一步成功");
+    }
 
 }
